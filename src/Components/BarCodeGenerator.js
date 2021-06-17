@@ -88,6 +88,7 @@ export const BarCodeGenerator = () => {
 
         }
     console.log('Form submitted was like : ', formData);
+        await window.location.reload();
     };
     console.log('Data is ', png);
 
