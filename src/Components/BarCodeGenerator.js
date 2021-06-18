@@ -130,7 +130,7 @@ export const BarCodeGenerator = () => {
     }
 
     const exportPDF = async () => {
-        const res = await exportComponentAsPDF(contentArea,  {pdfOptions: { orientation: 'l', unit: 'mm', w: 40, h: 25, pdfFormat: [112, 72]
+        const res = await exportComponentAsPDF(contentArea,  {pdfOptions: { orientation: 'l', unit: 'mm', w: 37, h: 22, x: 1, y: 2, pdfFormat: [112, 72]
             }});
         return res;
     }
