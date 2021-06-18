@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/barcode/static/css/main.663540b6.chunk.css",
-    "main.js": "/barcode/static/js/main.65a49644.chunk.js",
-    "main.js.map": "/barcode/static/js/main.65a49644.chunk.js.map",
-    "runtime-main.js": "/barcode/static/js/runtime-main.591008e1.js",
-    "runtime-main.js.map": "/barcode/static/js/runtime-main.591008e1.js.map",
-    "static/js/2.6de1817e.chunk.js": "/barcode/static/js/2.6de1817e.chunk.js",
-    "static/js/2.6de1817e.chunk.js.map": "/barcode/static/js/2.6de1817e.chunk.js.map",
-    "static/js/3.f03fa1dd.chunk.js": "/barcode/static/js/3.f03fa1dd.chunk.js",
-    "static/js/3.f03fa1dd.chunk.js.map": "/barcode/static/js/3.f03fa1dd.chunk.js.map",
-    "index.html": "/barcode/index.html",
-    "static/css/main.663540b6.chunk.css.map": "/barcode/static/css/main.663540b6.chunk.css.map",
-    "static/js/2.6de1817e.chunk.js.LICENSE.txt": "/barcode/static/js/2.6de1817e.chunk.js.LICENSE.txt",
-    "static/media/logo.6ce24c58.svg": "/barcode/static/media/logo.6ce24c58.svg"
+    "main.css": "/barcode-parser/static/css/main.663540b6.chunk.css",
+    "main.js": "/barcode-parser/static/js/main.65a49644.chunk.js",
+    "main.js.map": "/barcode-parser/static/js/main.65a49644.chunk.js.map",
+    "runtime-main.js": "/barcode-parser/static/js/runtime-main.79c631e8.js",
+    "runtime-main.js.map": "/barcode-parser/static/js/runtime-main.79c631e8.js.map",
+    "static/js/2.1ddb392e.chunk.js": "/barcode-parser/static/js/2.1ddb392e.chunk.js",
+    "static/js/2.1ddb392e.chunk.js.map": "/barcode-parser/static/js/2.1ddb392e.chunk.js.map",
+    "static/js/3.f03fa1dd.chunk.js": "/barcode-parser/static/js/3.f03fa1dd.chunk.js",
+    "static/js/3.f03fa1dd.chunk.js.map": "/barcode-parser/static/js/3.f03fa1dd.chunk.js.map",
+    "index.html": "/barcode-parser/index.html",
+    "static/css/main.663540b6.chunk.css.map": "/barcode-parser/static/css/main.663540b6.chunk.css.map",
+    "static/js/2.1ddb392e.chunk.js.LICENSE.txt": "/barcode-parser/static/js/2.1ddb392e.chunk.js.LICENSE.txt",
+    "static/media/logo.6ce24c58.svg": "/barcode-parser/static/media/logo.6ce24c58.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.591008e1.js",
-    "static/js/2.6de1817e.chunk.js",
+    "static/js/runtime-main.79c631e8.js",
+    "static/js/2.1ddb392e.chunk.js",
     "static/css/main.663540b6.chunk.css",
     "static/js/main.65a49644.chunk.js"
   ]
