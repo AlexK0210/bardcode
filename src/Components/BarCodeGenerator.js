@@ -16,6 +16,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import { OAuth2Client } from 'google-auth-library';
 const creds = require('../data/barcode0generator-dcafbe230368.json');
 
 export function getLastEan13Digit(ean) {
@@ -196,7 +197,7 @@ export const BarCodeGenerator = () => {
                         <label style={{fontSize: 50, fontWeight: 'bold', position: 'relative', top: '-30px'}}>грн</label>
                         <br/>
                         <label style={{fontSize: 24, padding: 0, position: 'relative', top: '-50px', zIndex: '1001'}}>
-                            {ua === undefined ? null : Object.values(ua)[0]} {sex === undefined ? null : Object.values(sex)}
+                            {ua === undefined ? ' ' : ua.name} {sex === undefined ? ' ' : Object.values(sex)}
                         </label>
                         <div style={{position: 'absolute', top: '58%', left: '6%', }}>
                         <Barcode value={bar} format="EAN13" fontSize={72} width={3.5} height={70}/>

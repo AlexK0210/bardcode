@@ -2,6 +2,9 @@
   "name": "barcode_parser",
   "version": "0.1.0",
   "private": true,
+  "name": "starter-project",
+  "homepage": "https://alexk0210.github.io/barcode-parser/",
+  "version": "0.1.0",
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/lab": "^4.0.0-alpha.58",
@@ -10,6 +13,8 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "express": "^4.17.1",
+    "gh-pages": "^3.2.2",
+    "google-auth-library": "^7.1.2",
     "google-spreadsheet": "^3.1.15",
     "jsbarcode": "^3.11.4",
     "jspdf": "^2.3.1",
@@ -26,6 +31,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
