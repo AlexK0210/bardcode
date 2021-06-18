@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from "@material-ui/core/Button";
@@ -8,7 +8,7 @@ import './BarCodeGenerator.css'
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Barcode from 'react-barcode';
-import { exportComponentAsPNG } from 'react-component-export-image';
+import { exportComponentAsPNG, exportComponentAsJPEG, exportComponentAsPDF } from 'react-component-export-image';
 import  { GoogleSpreadsheet } from 'google-spreadsheet';
 import ReactToPrint from "react-to-print";
 import Radio from '@material-ui/core/Radio';
@@ -32,31 +32,59 @@ export function getLastEan13Digit(ean) {
 
 export const BarCodeGenerator = () => {
     const contentArea = useRef(null);
-    const [formData, setFormData] = useState({
-    });
+    const [formData, setFormData] = useState(null);
     const [png, setPng] = useState();
-    if (formData[0] === undefined) {
-        (async function () {
-            const doc = new GoogleSpreadsheet('1aJxLjdtI3FoWPcdIO-OaZYGf503h7cqIMtijldu-JxI');
-            await doc.useServiceAccountAuth(creds);
-            await doc.loadInfo();
-            const sheet = doc.sheetsByIndex[0];
+    const [dataLoaded, setData] = useState(false);
+    // if (!formData) {
+    //     (async function () {
+    //         const doc = new GoogleSpreadsheet('1aJxLjdtI3FoWPcdIO-OaZYGf503h7cqIMtijldu-JxI');
+    //         await doc.useServiceAccountAuth(creds);
+    //         await doc.loadInfo();
+    //         const sheet = doc.sheetsByIndex[0];
+    //
+    //         const rows = await sheet.getRows();
+    //         if (rows.length > 0) {
+    //             setS(sheet);
+    //             setFormData(rows);
+    //             const n = rows.length - 1;
+    //             const barC = rows[n]['Штрих-код'];
+    //             const mainB = parseInt(barC.toString().substring(0, 12)) + 1;
+    //             const newBar = getLastEan13Digit(mainB.toString());
+    //             const bar = mainB.toString() + newBar;
+    //             if(bar) {
+    //                 setBar(bar);
+    //             }
+    //         }
+    //     })();
+    // };
+    useEffect(() => {
+        if (dataLoaded === false) {
+            (async function () {
+                const doc = new GoogleSpreadsheet('1aJxLjdtI3FoWPcdIO-OaZYGf503h7cqIMtijldu-JxI');
+                await doc.useServiceAccountAuth(creds);
+                await doc.loadInfo();
+                const sheet = doc.sheetsByIndex[0];
 
-            const rows = await sheet.getRows();
-            if (rows.length > 0) {
-                setS(sheet);
-                setFormData(rows);
-                const n = rows.length - 1;
-                const barC = rows[n]['Штрих-код'];
-                const mainB = parseInt(barC.toString().substring(0, 12)) + 1;
-                const newBar = getLastEan13Digit(mainB.toString());
-                const bar = mainB.toString() + newBar;
-                if(bar) {
-                    setBar(bar);
+                const rows = await sheet.getRows();
+                if (rows.length > 0) {
+                    setS(sheet);
+                    setFormData(rows);
+                    const n = rows.length - 1;
+                    const barC = rows[n]['Штрих-код'];
+                    const mainB = parseInt(barC.toString().substring(0, 12)) + 1;
+                    const newBar = getLastEan13Digit(mainB.toString());
+                    const bar = mainB.toString() + newBar;
+                    if (bar) {
+                        setBar(bar);
+                        setData(true);
+                    }
                 }
-            }
-        })();
-    };
+            })();
+        }
+        console.log('---------------------------------------------------------------REQUEST');
+
+    }, [dataLoaded, formData])
+
     const [s, setS] = useState();
     const [ua, setUa] = useState();
     const [bar, setBar] = useState();
@@ -76,7 +104,7 @@ export const BarCodeGenerator = () => {
         console.log('filter', filter);
         if(filter.length > 0) {
             await setBar(filter[0]['Штрих-код']);
-            await exportPng();
+            await exportPDF();
         } else {
             await s.addRow({
                 'Номенклатура': ua.name + ' ' + sex,
@@ -84,7 +112,7 @@ export const BarCodeGenerator = () => {
                 'Ціна': parseInt(price_.price),
                 'Дисконт': disc,
             })
-            await exportPng();
+            await exportPDF();
 
         }
     console.log('Form submitted was like : ', formData);
@@ -93,11 +121,17 @@ export const BarCodeGenerator = () => {
     console.log('Data is ', png);
 
     const exportPng = async () => {
-        const res = await exportComponentAsPNG(contentArea, {pdfOptions: {
+        const res = await exportComponentAsJPEG(contentArea, {pdfOptions: {
                 w: '151px', h: '94.49px'
             }});
         setPng(res);
         console.log('RES : ', res)
+        return res;
+    }
+
+    const exportPDF = async () => {
+        const res = await exportComponentAsPDF(contentArea,  {pdfOptions: { orientation: 'l', unit: 'mm', w: 40, h: 25, pdfFormat: [112, 72]
+            }});
         return res;
     }
     return (
