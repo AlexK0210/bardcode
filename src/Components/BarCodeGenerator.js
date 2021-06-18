@@ -135,12 +135,12 @@ export const BarCodeGenerator = () => {
         return res;
     }
     return (
-        <div className="barcode-component">
+        <div className="barcode-component" >
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
                 Форма Создания Этикетки
             </Typography>
-            <form onSubmit={async () => await(onSubmitForm)}>
+            <form style={{height: '1080px'}} onSubmit={async () => await(onSubmitForm)}>
                 <Autocomplete
                     id="names-ua"
                     options={names_ua}
@@ -187,19 +187,19 @@ export const BarCodeGenerator = () => {
             </form>
         </React.Fragment>
             <div className="card">
-                <Card style={{width: '151.18px', height: '94.49px', marginLeft: 'auto', marginRight: 'auto', marginBottom: 15}}>
-                    <div ref={contentArea} style={{width: '151.18px', height: '94.49px', position: 'relative'}}>
+                <Card style={{width: '472px', height: '295px', marginLeft: 'auto', marginRight: 'auto', marginBottom: 15}}>
+                    <div ref={contentArea} style={{width: '472px', height: '295px', position: 'relative'}}>
                     <CardContent style={{margin: 0, padding: 0}}>
-                        <label style={{fontSize: 42, fontWeight: 'bold', padding: 0, position: 'relative', top: '-7px'}}>
+                        <label style={{fontSize: 124, fontWeight: 'bold', padding: 0, position: 'relative', top: '-30px'}}>
                             {price_ === undefined ? null : Object.values(price_)[0]}
                         </label>
-                        <label style={{fontSize: 18, fontWeight: 'bold', position: 'relative', top: '-7px'}}>грн</label>
+                        <label style={{fontSize: 50, fontWeight: 'bold', position: 'relative', top: '-30px'}}>грн</label>
                         <br/>
-                        <label style={{fontSize: 10, padding: 0, position: 'relative', top: '-22px', zIndex: '1001'}}>
+                        <label style={{fontSize: 24, padding: 0, position: 'relative', top: '-50px', zIndex: '1001'}}>
                             {ua === undefined ? null : Object.values(ua)[0]} {sex === undefined ? null : Object.values(sex)}
                         </label>
-                        <div style={{position: 'absolute', top: '50%', left: '4px', }}>
-                        <Barcode value={bar} format="EAN13" width={1.05} height={20}/>
+                        <div style={{position: 'absolute', top: '58%', left: '6%', }}>
+                        <Barcode value={bar} format="EAN13" fontSize={72} width={3.5} height={70}/>
                         </div>
                     </CardContent>
                 </div>
