@@ -96,6 +96,7 @@ export const BarCodeGenerator = () => {
     const [price_, setPrice] = useState();
     const [disc, setD] = useState();
     const [sex, setSex] = useState();
+    const [dis, setDis] = useState(true);
     const reactToPrintContent = React.useCallback(() => {
         return contentArea.current;
     }, [contentArea.current]);
@@ -123,6 +124,7 @@ export const BarCodeGenerator = () => {
         console.log('filter', filter);
         if(filter.length > 0) {
             await setBar(filter[0]['Штрих-код']);
+            console.log('HERE')
         } else {
             await s.addRow({
                 'Номенклатура': ua.name + ' ' + sex,
@@ -130,12 +132,16 @@ export const BarCodeGenerator = () => {
                 'Ціна': parseInt(price_.price),
                 'Дисконт': disc,
             })
+            console.log('qwweerrttyy')
         }
     console.log('Form submitted was like : ', formData);
         await window.location.reload();
     };
     console.log('Data is ', png);
-
+    const handleChangeButton = () => {
+        console.log('here');
+        setDis(false);
+    }
     const exportPDF = async () => {
         const res = await exportComponentAsPDF(contentArea,  {pdfOptions: { orientation: 'l', unit: 'mm', w: 37, h: 22, x: 1, y: 2, pdfFormat: [112, 72]
             }});
@@ -190,12 +196,12 @@ export const BarCodeGenerator = () => {
                     </RadioGroup>
                 </FormControl>
                 <br/>
-                <Button id="submit-button" variant="contained" color="primary" style={{marginBottom: 15, marginTop: 15}} onClick={onSubmitForm}> Создать Этикетку</Button>
+                <Button id="submit-button" variant="contained" color="primary" style={{marginBottom: 15, marginTop: 15}} disabled={dis} onClick={onSubmitForm}>Создать Запись в БД</Button>
                 <br/>
             </form>
         </React.Fragment>
             <div className="card" id="card-print">
-                <PrintComponents trigger={<Button variant="contained" color="primary">Печатать Компонент</Button>}>
+                <PrintComponents trigger={<Button variant="contained" color="primary" onMouseEnter={() => handleChangeButton()}>Печатать Этикетку</Button>}>
                 <Card style={{width: '100%', height: '800px', marginLeft: 'auto', marginRight: 'auto', marginBottom: 15, textAlign: 'center'}}>
                     <div ref={contentArea} style={{width: '100%', height: '800px', position: 'relative'}}>
                     <CardContent style={{margin: 0, padding: 0}}>
@@ -204,7 +210,7 @@ export const BarCodeGenerator = () => {
                         </label>
                         <label style={{fontSize: 120, fontWeight: 'bold', position: 'relative', top: '-30px'}}>грн</label>
                         <br/>
-                        <label style={{fontSize: 84, padding: 0, position: 'relative', top: '-50px',marginLeft: '30%', marginRight: '25%', zIndex: '1001'}}>
+                        <label style={{fontSize: 84, padding: 0, position: 'relative', top: '-50px', zIndex: '1001'}}>
                             {ua === undefined ? ' ' : ua.name} {sex === undefined ? ' ' : sex}
                         </label>
                         <div style={{position: 'absolute', top: '60%', left: '6%', }}>
