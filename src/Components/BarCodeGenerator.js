@@ -10,14 +10,16 @@ import CardContent from '@material-ui/core/CardContent';
 import Barcode from 'react-barcode';
 import { exportComponentAsPNG, exportComponentAsJPEG, exportComponentAsPDF } from 'react-component-export-image';
 import  { GoogleSpreadsheet } from 'google-spreadsheet';
-import ReactToPrint from "react-to-print";
+import {useReactToPrint} from "react-to-print";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-const creds = require('../data/barcode0generator-dcafbe230368.json');
+import ComponentToPrint from 'react-to-print';
+import PrintComponents from "react-print-components";
 
+const creds = require('../data/barcode0generator-dcafbe230368.json');
 export function getLastEan13Digit(ean) {
     if (!ean || ean.length !== 12) throw new Error('Invalid EAN 13, should have 12 digits');
     const multiply = [1, 3];
@@ -31,10 +33,13 @@ export function getLastEan13Digit(ean) {
 
 
 export const BarCodeGenerator = () => {
-    const contentArea = useRef(null);
+    const contentArea = useRef();
     const [formData, setFormData] = useState(null);
     const [png, setPng] = useState();
     const [dataLoaded, setData] = useState(false);
+    const handlePrint = useReactToPrint({
+        content: () => contentArea.current
+    })
     // if (!formData) {
     //     (async function () {
     //         const doc = new GoogleSpreadsheet('1aJxLjdtI3FoWPcdIO-OaZYGf503h7cqIMtijldu-JxI');
@@ -91,6 +96,20 @@ export const BarCodeGenerator = () => {
     const [price_, setPrice] = useState();
     const [disc, setD] = useState();
     const [sex, setSex] = useState();
+    const reactToPrintContent = React.useCallback(() => {
+        return contentArea.current;
+    }, [contentArea.current]);
+    const reactToPrintTrigger = React.useCallback(() => {
+        // NOTE: could just as easily return <SomeComponent />. Do NOT pass an `onClick` prop
+        // to the root node of the returned component as it will be overwritten.
+
+        // Bad: the `onClick` here will be overwritten by `react-to-print`
+        // return <a href="#" onClick={() => alert('This will not work')}>Print this out!</a>;
+
+        // Good
+        return <a href="#">Print using a Functional Component</a>;
+    }, []);
+
     console.log(sex);
     console.log(disc);
     const names_ua = names.map(e => ({
@@ -104,7 +123,6 @@ export const BarCodeGenerator = () => {
         console.log('filter', filter);
         if(filter.length > 0) {
             await setBar(filter[0]['Штрих-код']);
-            await exportPDF();
         } else {
             await s.addRow({
                 'Номенклатура': ua.name + ' ' + sex,
@@ -112,22 +130,11 @@ export const BarCodeGenerator = () => {
                 'Ціна': parseInt(price_.price),
                 'Дисконт': disc,
             })
-            await exportPDF();
-
         }
     console.log('Form submitted was like : ', formData);
         await window.location.reload();
     };
     console.log('Data is ', png);
-
-    const exportPng = async () => {
-        const res = await exportComponentAsJPEG(contentArea, {pdfOptions: {
-                w: '151px', h: '94.49px'
-            }});
-        setPng(res);
-        console.log('RES : ', res)
-        return res;
-    }
 
     const exportPDF = async () => {
         const res = await exportComponentAsPDF(contentArea,  {pdfOptions: { orientation: 'l', unit: 'mm', w: 37, h: 22, x: 1, y: 2, pdfFormat: [112, 72]
@@ -140,10 +147,11 @@ export const BarCodeGenerator = () => {
             <Typography variant="h6" gutterBottom>
                 Форма Создания Этикетки
             </Typography>
-            <form style={{height: '1080px'}} onSubmit={async () => await(onSubmitForm)}>
+            <form  onSubmit={async () => await(onSubmitForm)}>
                 <Autocomplete
                     id="names-ua"
                     options={names_ua}
+                    freeSolo
                     getOptionLabel={(option) => option.name}
                     style={{
                         width: '300'
@@ -155,6 +163,7 @@ export const BarCodeGenerator = () => {
                 <Autocomplete
                     id="price"
                     options={price}
+                    freeSolo
                     getOptionLabel={(option) => option.price}
                     style={{
                         width: '300'
@@ -174,7 +183,6 @@ export const BarCodeGenerator = () => {
                 <FormControl component="fieldset">
                     <FormLabel component="legend">Укажите Пол</FormLabel>
                     <RadioGroup row aria-label="gender" name="gender1" value={sex} onChange={(event) => setSex(event.target.value)}>
-                        <FormControlLabel value={''} control={<Radio />} label="n/a" />
                         <FormControlLabel value="чол" control={<Radio />} label="М" />
                         <FormControlLabel value="жін" control={<Radio />} label="Ж" />
                         <FormControlLabel value="уні" control={<Radio />} label="У" />
@@ -186,24 +194,26 @@ export const BarCodeGenerator = () => {
                 <br/>
             </form>
         </React.Fragment>
-            <div className="card">
-                <Card style={{width: '472px', height: '295px', marginLeft: 'auto', marginRight: 'auto', marginBottom: 15}}>
-                    <div ref={contentArea} style={{width: '472px', height: '295px', position: 'relative'}}>
+            <div className="card" id="card-print">
+                <PrintComponents trigger={<Button variant="contained" color="primary">Печатать Компонент</Button>}>
+                <Card style={{width: '100%', height: '800px', marginLeft: 'auto', marginRight: 'auto', marginBottom: 15, textAlign: 'center'}}>
+                    <div ref={contentArea} style={{width: '100%', height: '800px', position: 'relative'}}>
                     <CardContent style={{margin: 0, padding: 0}}>
-                        <label style={{fontSize: 124, fontWeight: 'bold', padding: 0, position: 'relative', top: '-30px'}}>
+                        <label style={{fontSize: 320, fontWeight: 'bold', padding: 0, position: 'relative', top: '-30px'}}>
                             {price_ === undefined ? null : Object.values(price_)[0]}
                         </label>
-                        <label style={{fontSize: 50, fontWeight: 'bold', position: 'relative', top: '-30px'}}>грн</label>
+                        <label style={{fontSize: 120, fontWeight: 'bold', position: 'relative', top: '-30px'}}>грн</label>
                         <br/>
-                        <label style={{fontSize: 24, padding: 0, position: 'relative', top: '-50px', zIndex: '1001'}}>
+                        <label style={{fontSize: 84, padding: 0, position: 'relative', top: '-50px',marginLeft: '30%', marginRight: '25%', zIndex: '1001'}}>
                             {ua === undefined ? ' ' : ua.name} {sex === undefined ? ' ' : sex}
                         </label>
-                        <div style={{position: 'absolute', top: '58%', left: '6%', }}>
-                        <Barcode value={bar} format="EAN13" fontSize={72} width={3.5} height={70}/>
+                        <div style={{position: 'absolute', top: '60%', left: '6%', }}>
+                        <Barcode value={bar} format="EAN13" fontSize={72} width={8} height={180}/>
                         </div>
                     </CardContent>
                 </div>
                 </Card>
+                </PrintComponents>
             </div>
         </div>
     )
