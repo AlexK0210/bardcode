@@ -140,6 +140,8 @@ export const BarCodeGenerator = () => {
     console.log('Data is ', png);
     const handleChangeButton = () => {
         console.log('here');
+        const but = document.getElementById('submit-button');
+        but.click();
         setDis(false);
     }
     const exportPDF = async () => {
@@ -201,7 +203,7 @@ export const BarCodeGenerator = () => {
             </form>
         </React.Fragment>
             <div className="card" id="card-print">
-                <PrintComponents trigger={<Button variant="contained" color="primary" onMouseEnter={() => handleChangeButton()}>Печатать Этикетку</Button>}>
+                <PrintComponents trigger={<Button style={{top: '-50px', width: '230px'}} variant="contained" color="primary" onMouseLeave={() => handleChangeButton()}>Печатать Этикетку</Button>}>
                 <Card style={{width: '100%', height: '800px', marginLeft: 'auto', marginRight: 'auto', marginBottom: 15, textAlign: 'center'}}>
                     <div ref={contentArea} style={{width: '100%', height: '800px', position: 'relative'}}>
                     <CardContent style={{margin: 0, padding: 0}}>
