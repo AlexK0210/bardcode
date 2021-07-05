@@ -219,11 +219,11 @@ export const BarCodeGenerator = () => {
                         </label>
                         <label style={{fontSize: 120, fontWeight: 'bold', position: 'relative', top: '-30px'}}>грн</label>
                         <br/>
-                        <label style={{fontSize: 84, padding: 0, position: 'relative', top: '-50px', zIndex: '1001'}}>
+                        <label style={{fontSize: 84, padding: 0, position: 'relative', top: '-70px', zIndex: '1001'}}>
                             {ua.hasOwnProperty('name')  ? ua.name  : ' '} {sex === undefined ? ' ' : sex}
                         </label>
-                        <div style={{position: 'absolute', top: '63%', justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
-                        <Barcode value={bar} format="EAN13" fontSize={72} width={9} height={205}/>
+                        <div style={{position: 'absolute', top: '59%', left: '40%' }}>
+                        <Barcode value={bar} format="EAN13" fontSize={92} width={10} height={220}/>
                         </div>
                     </CardContent>
                 </div>
