@@ -222,7 +222,7 @@ export const BarCodeGenerator = () => {
                         <label style={{fontSize: 84, padding: 0, position: 'relative', top: '-70px', zIndex: '1001'}}>
                             {ua.hasOwnProperty('name')  ? ua.name  : ' '} {sex === undefined ? ' ' : sex}
                         </label>
-                        <div style={{position: 'absolute', top: '59%' }}>
+                        <div style={{position: 'absolute', top: '59%', left: '7%'}}>
                         <Barcode value={bar} format="EAN13" fontSize={92} width={10} height={220}/>
                         </div>
                     </CardContent>
