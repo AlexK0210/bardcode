@@ -15,7 +15,7 @@ function App() {
           <nav>
             <ul>
               <li>
-                <Link to="/barcode">Новая Номенклатура</Link>
+                <Link styles={{display: 'none'}} to="/barcode">Новая Номенклатура</Link>
               </li>
             </ul>
           </nav>
