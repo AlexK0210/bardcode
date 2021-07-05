@@ -37,6 +37,8 @@ export const BarCodeGenerator = () => {
     const [formData, setFormData] = useState(null);
     const [png, setPng] = useState();
     const [dataLoaded, setData] = useState(false);
+    const [nameData, setNameData] = useState([]);
+    const [priceData, setPrData] = useState([]);
     const handlePrint = useReactToPrint({
         content: () => contentArea.current
     })
@@ -69,10 +71,32 @@ export const BarCodeGenerator = () => {
                 await doc.useServiceAccountAuth(creds);
                 await doc.loadInfo();
                 const sheet = doc.sheetsByIndex[0];
-
+                const nomen = doc.sheetsByIndex[1];
+                const ppp = doc.sheetsByIndex[2];
+                const pp = await ppp.getRows();
+                const toSendP = pp.map(el => {
+                    return {
+                        price: el['Price']
+                    }
+                })
+                const names = await nomen.getRows();
+                const toSendNames = names.map(el => {
+                    return {
+                        name: el.Name
+                    }
+                })
+                console.log(toSendNames);
+                if (toSendNames.length > 0) {
+                    setNameData(toSendNames);
+                }
+                if (toSendP.length > 0) {
+                    setPrData(toSendP);
+                }
                 const rows = await sheet.getRows();
                 if (rows.length > 0) {
                     setS(sheet);
+                    setS2(nomen);
+                    setS3(ppp);
                     setFormData(rows);
                     const n = rows.length - 1;
                     const barC = rows[n]['Штрих-код'];
@@ -91,6 +115,8 @@ export const BarCodeGenerator = () => {
     }, [dataLoaded, formData])
 
     const [s, setS] = useState(' ');
+    const [s2, setS2] = useState('');
+    const [s3, setS3] = useState('');
     const [ua, setUa] = useState(' ');
     const [bar, setBar] = useState(' ');
     const [price_, setPrice] = useState(' ');
@@ -111,16 +137,33 @@ export const BarCodeGenerator = () => {
         return <a href="#">Print using a Functional Component</a>;
     }, []);
 
-    console.log(sex);
-    console.log(disc);
     const names_ua = names.map(e => ({
         name: e.name
     }));
-    console.log(ua, bar, price_, disc);
     const onSubmitForm = async () => {
         const filter = formData.filter(el => {
             return el['Ціна'] === price_.price && el['Номенклатура'].includes(ua.name) && el['Дисконт'] === disc;
         })
+        const filter2 = nameData.filter(el => {
+            return el['Name'] === ua.name;
+        });
+        const filter3 = priceData.filter(el => {
+            return el['Price'] === Object.values(price_)[0]
+        })
+        if (filter3.length > 0) {
+            console.log('HERERERE')
+        } else {
+            s3.addRow({
+                'Price': Object.values(price_)[0]
+            })
+        }
+        if (filter2.length > 0) {
+            console.log('""""""""', filter2)
+        } else {
+            s2.addRow({
+                'Name': ua.name
+            })
+        }
         console.log('filter', filter);
         if(filter.length > 0) {
             await setBar(filter[0]['Штрих-код']);
@@ -132,7 +175,6 @@ export const BarCodeGenerator = () => {
                 'Ціна': parseInt(price_.price),
                 'Дисконт': disc,
             })
-            console.log('qwweerrttyy')
         }
     console.log('Form submitted was like : ', formData);
         await window.location.reload();
@@ -159,7 +201,7 @@ export const BarCodeGenerator = () => {
             <form  onSubmit={async () => await(onSubmitForm)}>
                 <Autocomplete
                     id="names-ua"
-                    options={names_ua}
+                    options={nameData}
                     freeSolo
                     getOptionLabel={(option) => option.name}
                     style={{
@@ -174,7 +216,7 @@ export const BarCodeGenerator = () => {
                 <br/>
                 <Autocomplete
                     id="price"
-                    options={price}
+                    options={priceData}
                     freeSolo
                     getOptionLabel={(option) => option.price}
                     style={{
