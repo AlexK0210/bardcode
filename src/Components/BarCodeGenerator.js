@@ -137,21 +137,18 @@ export const BarCodeGenerator = () => {
         return <a href="#">Print using a Functional Component</a>;
     }, []);
 
-    const names_ua = names.map(e => ({
-        name: e.name
-    }));
     const onSubmitForm = async () => {
         const filter = formData.filter(el => {
             return el['Ціна'] === price_.price && el['Номенклатура'].includes(ua.name) && el['Дисконт'] === disc;
         })
         const filter2 = nameData.filter(el => {
-            return el['Name'] === ua.name;
+            return el.name === ua.name;
         });
         const filter3 = priceData.filter(el => {
-            return el['Price'] === Object.values(price_)[0]
+            return el.price === price_.price
         })
         if (filter3.length > 0) {
-            console.log('HERERERE')
+            console.log('NAME AND PRICE WAS SEND')
         } else {
             s3.addRow({
                 'Price': Object.values(price_)[0]
@@ -177,7 +174,6 @@ export const BarCodeGenerator = () => {
             })
         }
     console.log('Form submitted was like : ', formData);
-        await window.location.reload();
     };
     console.log('Data is ', png);
     const handleChangeButton = () => {
