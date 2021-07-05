@@ -90,12 +90,12 @@ export const BarCodeGenerator = () => {
 
     }, [dataLoaded, formData])
 
-    const [s, setS] = useState();
-    const [ua, setUa] = useState();
-    const [bar, setBar] = useState();
-    const [price_, setPrice] = useState();
-    const [disc, setD] = useState();
-    const [sex, setSex] = useState();
+    const [s, setS] = useState(' ');
+    const [ua, setUa] = useState(' ');
+    const [bar, setBar] = useState(' ');
+    const [price_, setPrice] = useState(' ');
+    const [disc, setD] = useState(' ');
+    const [sex, setSex] = useState(' ');
     const [dis, setDis] = useState(true);
     const reactToPrintContent = React.useCallback(() => {
         return contentArea.current;
@@ -149,6 +149,7 @@ export const BarCodeGenerator = () => {
             }});
         return res;
     }
+    console.log('PRICE AND NAME : : : ', price_, ua);
     return (
         <div className="barcode-component" >
         <React.Fragment>
@@ -165,6 +166,9 @@ export const BarCodeGenerator = () => {
                         width: '300'
                     }}
                     onChange={(event, value) => setUa(value)}
+                    onInputChange={(event, value) => {
+                        setUa({name: value})
+                    }}
                     renderInput={(params) => <TextField {...params} label="Номенклатура" variant="outlined" /> }
                 />
                 <br/>
@@ -178,6 +182,9 @@ export const BarCodeGenerator = () => {
                     }}
                     onChange={(event, value) => setPrice(value)}
                     renderInput={(params) => <TextField {...params} label="Цена" variant="outlined" /> }
+                    onInputChange={(event, value) => {
+                        setPrice({price: value})
+                    }}
                 />
                 <br/>
                 <FormControl component="fieldset">
@@ -208,12 +215,12 @@ export const BarCodeGenerator = () => {
                     <div ref={contentArea} style={{width: '100%', height: '800px', position: 'relative'}}>
                     <CardContent style={{margin: 0, padding: 0}}>
                         <label style={{fontSize: 320, fontWeight: 'bold', padding: 0, position: 'relative', top: '-30px'}}>
-                            {price_ === undefined ? null : Object.values(price_)[0]}
+                            {price_.hasOwnProperty('price') ? Object.values(price_)[0] : ' '}
                         </label>
                         <label style={{fontSize: 120, fontWeight: 'bold', position: 'relative', top: '-30px'}}>грн</label>
                         <br/>
                         <label style={{fontSize: 84, padding: 0, position: 'relative', top: '-50px', zIndex: '1001'}}>
-                            {ua === undefined ? ' ' : ua.name} {sex === undefined ? ' ' : sex}
+                            {ua.hasOwnProperty('name')  ? ua.name  : ' '} {sex === undefined ? ' ' : sex}
                         </label>
                         <div style={{position: 'absolute', top: '60%', left: '6%', }}>
                         <Barcode value={bar} format="EAN13" fontSize={72} width={8} height={180}/>
