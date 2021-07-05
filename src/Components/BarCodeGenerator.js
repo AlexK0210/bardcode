@@ -210,7 +210,7 @@ export const BarCodeGenerator = () => {
             </form>
         </React.Fragment>
             <div className="card" id="card-print">
-                <PrintComponents trigger={<Button style={{top: '-50px', width: '230px'}} variant="contained" color="primary" onMouseLeave={() => handleChangeButton()}>Печатать Этикетку</Button>}>
+                <PrintComponents trigger={<Button style={{ width: '230px'}} variant="contained" color="primary" onMouseDown={() => handleChangeButton()}>Печатать Этикетку</Button>}>
                 <Card style={{width: '100%', height: '800px', marginLeft: 'auto', marginRight: 'auto', marginBottom: 15, textAlign: 'center'}}>
                     <div ref={contentArea} style={{width: '100%', height: '800px', position: 'relative'}}>
                     <CardContent style={{margin: 0, padding: 0}}>
@@ -222,8 +222,8 @@ export const BarCodeGenerator = () => {
                         <label style={{fontSize: 84, padding: 0, position: 'relative', top: '-50px', zIndex: '1001'}}>
                             {ua.hasOwnProperty('name')  ? ua.name  : ' '} {sex === undefined ? ' ' : sex}
                         </label>
-                        <div style={{position: 'absolute', top: '60%', left: '6%', }}>
-                        <Barcode value={bar} format="EAN13" fontSize={72} width={8} height={180}/>
+                        <div style={{position: 'absolute', top: '63%' }}>
+                        <Barcode value={bar} format="EAN13" fontSize={72} width={9} height={205}/>
                         </div>
                     </CardContent>
                 </div>
