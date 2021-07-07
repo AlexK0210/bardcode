@@ -165,6 +165,8 @@ export const BarCodeGenerator = () => {
         if(filter.length > 0) {
             await setBar(filter[0]['Штрих-код']);
             console.log('HERE')
+            await window.location.reload();
+
         } else {
             await s.addRow({
                 'Номенклатура': ua.name + ' ' + sex,
@@ -172,11 +174,18 @@ export const BarCodeGenerator = () => {
                 'Ціна': parseInt(price_.price),
                 'Дисконт': disc,
             })
+            window.location.reload();
         }
     console.log('Form submitted was like : ', formData);
     };
-    console.log('Data is ', png);
-    const handleChangeButton = () => {
+    const handleChangeButton = async () => {
+        const filter = formData.filter(el => {
+            return el['Ціна'] === price_.price && el['Номенклатура'].includes(ua.name) && el['Дисконт'] === disc;
+        });
+        if(filter.length > 0) {
+            await setBar(filter[0]['Штрих-код']);
+            console.log('-----------------------------------------------------------------------------------------------------!!!!')
+        }
         console.log('here');
         const but = document.getElementById('submit-button');
         but.click();
@@ -187,7 +196,6 @@ export const BarCodeGenerator = () => {
             }});
         return res;
     }
-    console.log('PRICE AND NAME : : : ', price_, ua);
     return (
         <div className="barcode-component" >
         <React.Fragment>
