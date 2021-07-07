@@ -67,7 +67,7 @@ export const BarCodeGenerator = () => {
     useEffect(() => {
         if (dataLoaded === false) {
             (async function () {
-                const doc = new GoogleSpreadsheet('1aJxLjdtI3FoWPcdIO-OaZYGf503h7cqIMtijldu-JxI');
+                const doc = new GoogleSpreadsheet('1JDMcJcq2HO72L3ADETIB3w97eb0I1L_5-dMFHl6dcQI');
                 await doc.useServiceAccountAuth(creds);
                 await doc.loadInfo();
                 const sheet = doc.sheetsByIndex[0];
