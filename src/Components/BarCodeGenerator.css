@@ -24,3 +24,22 @@
     margin: 2px;
 }
 
+
+@media print
+{
+   @page
+   html, body
+   {
+       size: 4cm 2.5cm;
+       margin: 0;
+       text-decoration: underline;
+    }
+
+   @page
+   html, body {
+       margin: 0;
+       size: 4cm 2.5cm;
+       min-width: fit-content;
+       min-height: fit-content;
+   }
+}
